@@ -14,15 +14,15 @@ int main(){
     // Use for loop to enter the details of the process like Arrival time and the Burst Time  
     for(i=0; i<NOP; i++){  
         printf("\n Enter the Arrival and Burst time of the Process[%d]\n", i+1);  
-        printf(" Arrival time is: \t");  // Accept arrival time  
+        printf("\tArrival time is: ");  // Accept arrival time  
         scanf("%d", &arrival_time[i]);  
-        printf(" \nBurst time is: \t"); // Accept the Burst time  
+        printf(" \tBurst time is: "); // Accept the Burst time  
         scanf("%d", &burst_time[i]);  
         temp[i] = burst_time[i]; // store the burst time in temp array  
     }  
 
     // Accept the Time quantum  
-    printf("Enter the Time Quantum for the process: \t");  
+    printf("\n Enter the Time Quantum for the process: ");  
     scanf("%d", &quantum);  
 
     // Display the process No, burst time, Turn Around Time and the waiting time  
@@ -58,8 +58,8 @@ int main(){
     // represents the average waiting time and Turn Around time  
     avg_waiting_time = waiting_time * 1.0/NOP;  
     avg_turnaround_time = turnaround_time * 1.0/NOP;  
-    printf("\n Average Turn Around Time: \t%.2f", avg_waiting_time);  
-    printf("\n Average Waiting Time: \t%.2f", avg_turnaround_time);  
+    printf("\n\nAverage Turn Around Time: %.2f", avg_waiting_time);  
+    printf("\nAverage Waiting Time: %.2f", avg_turnaround_time);  
     getchar();  
 
     return 0;
