@@ -32,7 +32,7 @@ void round_robin(struct Process* processes, int num_processes, int quantum, int*
         
         if (temp[i]==0 && count == 1){
             y--;
-            printf("\n Process %d \t\t %d\t\t\t %d\t\t\t %d", i+1, processes[i].burst_time, sum - processes[i].arrival_time, sum - processes[i].arrival_time - processes[i].burst_time);
+            printf("\n Process %d \t\t %d\t\t\t %d\t\t\t %d", processes[i].id, processes[i].burst_time, sum - processes[i].arrival_time, sum - processes[i].arrival_time - processes[i].burst_time);
             *total_waiting_time += sum - processes[i].arrival_time - processes[i].burst_time;  
             *total_turnaround_time += sum - processes[i].arrival_time;
             count = 0;
@@ -60,6 +60,36 @@ int main() {
         processes[i].complete = 0;
     }
 
+    // sort process array
+    struct Process tempProcess;
+    for (int i = 0; i <num_processes; i++){
+        for (int x = 0; x<(num_processes-1);x++){
+            if (processes[x].arrival_time>processes[x+1].arrival_time){
+                tempProcess = processes[x];
+                processes[x] = processes[x+1];
+                processes[x+1] = tempProcess;
+                
+            }
+        }
+    }
+
+    // check if arrival times are valid (no repetition and starts with 0)
+    if(processes[0].arrival_time != 0){
+        printf("\n\nInvalid Arrival Times!");
+        return 0;
+    }
+    else{
+        for (int i = 0 ; i < (num_processes-1); i++){
+            if ((processes[i+1].arrival_time - processes[i].arrival_time) != 1){
+                printf("\n\nInvalid Arrival Times!");
+                return 0;
+            }
+            
+        }
+    }
+
+
+
     // Prompt the user to enter the time quantum for the Round Robin scheduler
     printf("Enter the time quantum: ");
     int quantum;
@@ -67,7 +97,7 @@ int main() {
 
     // Run the Round Robin scheduling algorithm
     int total_waiting_time=0, total_turnaround_time=0;
-    printf("\n Process No \t\t Burst Time \t\t Turnaround Time \t Waiting Time ");  
+    printf("\n Process ID \t\t Burst Time \t\t Turnaround Time \t Waiting Time ");  
     round_robin(processes, num_processes, quantum, &total_waiting_time, &total_turnaround_time);
 
     // Calculate the average waiting time
