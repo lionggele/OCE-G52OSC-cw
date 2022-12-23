@@ -1,74 +1,60 @@
-// C program for implementation of FCFS
-// scheduling
 #include <stdio.h>
-// Function to find the waiting time for all
-// processes
-void waitingTime(int n,
-                 int bt[], int wt[])
+
+int main()
 {
-    // waiting time for first process is 0
-    wt[0] = 0;
+    // initlialize the variable name
+    int i, y, sum = 0, count = 0, temp[10];
+    int NOP, quantum, waiting_time = 0, turnaround_time = 0, arrival_time[10], burst_time[10];
+    float avg_waiting_time, avg_turnaround_time;
 
-    // calculating waiting time
-    for (int i = 1; i < n; i++)
-        wt[i] = bt[i - 1] + wt[i - 1];
-}
+    // Accept number of processes
+    printf(" Total number of process in the system: ");
+    scanf("%d", &NOP);
+    y = NOP; // Assign the number of process to variable y
 
-// Function to calculate turn around time
-void turnAroundTime(int n,
-                    int bt[], int wt[], int tat[])
-{
-    // calculating turnaround time by adding
-    // bt[i] + wt[i]
-    for (int i = 0; i < n; i++)
-        tat[i] = bt[i] + wt[i];
-}
-
-// Function to calculate average time
-void avgTime(int n, int al[], int bt[], int t)
-{
-    int i, wt[n], tat[n], total = 0, counter = 0, total_wt = 0, total_tat = 0;
-
-    // Function to find waiting time of all processes
-    waitingTime(n, bt, wt);
-
-    // Function to find turn around time for all processes
-    turnAroundTime(n, bt, wt, tat);
-
-    // Display processes along with all details
-    printf("Processes Arrival time Burst time Waiting time Turn around time\n");
-
-    for (total = 0, i = 0; n != 0)
+    // Use for loop to enter the details of the process like Arrival time and the Burst Time
+    for (i = 0; i < NOP; i++)
     {
-        if (bt[i] <= t && bt[i] > 0)
-        {
-            total = total + bt[i];
-            bt[i] = 0;
-            counter = 1;
+        printf("\n Enter the Arrival and Burst time of the Process[%d]\n", i + 1);
+        printf("\tArrival time is: "); // Accept arrival time
+        scanf("%d", &arrival_time[i]);
+        printf(" \tBurst time is: "); // Accept the Burst time
+        scanf("%d", &burst_time[i]);
+        temp[i] = burst_time[i]; // store the burst time in temp array
+    }
+
+    // Accept the Time quantum
+    printf("\n Enter the Time Quantum for the process: ");
+    scanf("%d", &quantum);
+
+    // Display the process No, burst time, Turn Around Time and the waiting time
+    printf("\n Process No \t\t Burst Time \t\t Turnaround Time \t Waiting Time ");
+    for (sum = 0, i = 0; y != 0;)
+    {
+        if (temp[i] <= quantum && temp[i] > 0)
+        { // define the conditions
+            sum = sum + temp[i];
+            temp[i] = 0;
+            count = 1;
         }
-        else if (bt[i] > 0)
+        else if (temp[i] > 0)
         {
-            bt[i] = bt[i] - t;
-            total = total + t;
+            temp[i] = temp[i] - quantum;
+            sum = sum + quantum;
         }
-        // Calculate total waiting time and total turn
-        // around time
-        if (bt[i] == 0 && counter == 1)
+        if (temp[i] == 0 && count == 1)
         {
-            n--;
-            total_wt = total_wt + wt[i];
-            total_tat = total_tat + tat[i];
-            printf(" %d ", (i + 1));
-            printf("	       %d ", al[i]);
-            printf("	    %d ", bt[i]);
-            printf("	         %d", wt[i]);
-            printf("	     %d\n", tat[i]);
+            y--; // decrement the process no.
+            printf("\n Process %d \t\t %d\t\t\t %d\t\t\t %d", i + 1, burst_time[i], sum - arrival_time[i], sum - arrival_time[i] - burst_time[i]);
+            waiting_time = waiting_time + sum - arrival_time[i] - burst_time[i];
+            turnaround_time = turnaround_time + sum - arrival_time[i];
+            count = 0;
         }
-        if (i == n - 1)
+        if (i == NOP - 1)
         {
             i = 0;
         }
-        else if (al[i + 1] <= total)
+        else if (arrival_time[i + 1] <= sum)
         {
             i++;
         }
@@ -77,54 +63,13 @@ void avgTime(int n, int al[], int bt[], int t)
             i = 0;
         }
     }
-    int s = (float)total_wt / (float)n;
-    int t = (float)total_tat / (float)n;
-    printf("Average waiting time = %d", s);
-    printf("\n");
-    printf("Average turn around time = %d ", t);
-    printf("\n");
-    printf("Total number of task processes per unit of time: %d", n);
-}
 
-// Driver code
-int main()
-{
-    // process id's
-    // int processes[];
-    // int n = sizeof processes / sizeof processes[0];
-    int processes[20];
-    int n;
+    // represents the average waiting time and Turn Around time
+    avg_waiting_time = waiting_time * 1.0 / NOP;
+    avg_turnaround_time = turnaround_time * 1.0 / NOP;
+    printf("\n\nAverage Turn Around Time: %.2f", avg_waiting_time);
+    printf("\nAverage Waiting Time: %.2f", avg_turnaround_time);
+    getchar();
 
-    // arrival_time for all processes
-    int arrival_time[20];
-
-    // Burst time of all processes
-    int burst_time[20];
-
-    // time queantum
-    int time_quantum;
-    //  Enter number of process
-    printf("Enter the number of processes: ");
-    scanf("%d", &n);
-
-    for (int i = 0; i < n; i++)
-    {
-        // Enter process id's
-        printf("Enter process id of all the processes: ");
-        scanf("%d", &processes[i]);
-
-        // Eneter Arrival Time
-        printf("Enter the arrival time for %d process: ", processes[i]);
-        scanf("%d", &arrival_time[i]);
-
-        // Enter burst time
-        printf("Enter the burst time for %d process: ", processes[i]);
-        scanf("%d", &burst_time[i]);
-    }
-
-    printf("Enter Time Quantum:\n");
-    scanf("%d", &time_quantum);
-
-    avgTime(n, arrival_time, burst_time, time_quantum);
     return 0;
 }
