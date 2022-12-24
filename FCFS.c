@@ -1,5 +1,3 @@
-// C program for implementation of FCFS
-// scheduling
 #include <stdio.h>
 // Function to find the waiting time for all
 // processes
@@ -14,8 +12,7 @@ void waitingTime(int n, int bt[], int wt[])
 }
 
 // Function to calculate turn around time
-void turnAroundTime(int n,
-                    int bt[], int wt[], int tat[])
+void turnAroundTime(int n, int bt[], int wt[], int tat[])
 {
     // calculating turnaround time by adding
     // bt[i] + wt[i]

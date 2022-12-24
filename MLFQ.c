@@ -26,7 +26,7 @@ void round_robin(struct Process* q1, int num_processes, int quantum, int* total_
     for(int i = 0; i< num_processes; i++){
         
         q1[i].complete = 0;
-        if (q1[i].burst_time < quantum){
+        if (q1[i].burst_time < quantum){ // Condition for if burst time is lesser than the quantum time
             q1[i].waiting_time = sum - q1[i].arrival_time;
             sum+=q1[i].burst_time;
             q1[i].remaining_burst = 0;
@@ -34,7 +34,7 @@ void round_robin(struct Process* q1, int num_processes, int quantum, int* total_
             q1[i].complete = 1;
             
         }
-        else if (q1[i].burst_time == quantum){
+        else if (q1[i].burst_time == quantum){ // Condition for if the burst time is equal to the quantum time
             q1[i].waiting_time = sum - q1[i].arrival_time;
             sum+=quantum;
             q1[i].remaining_burst = 0;
@@ -42,7 +42,7 @@ void round_robin(struct Process* q1, int num_processes, int quantum, int* total_
             q1[i].complete = 1;
 
         } 
-        else{
+        else{ // Condition for when the burst time exceeds the quantum time
             q1[i].waiting_time = sum - q1[i].arrival_time;
             sum+=quantum;
             q2Length++;

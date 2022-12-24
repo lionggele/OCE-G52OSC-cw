@@ -1,80 +1,97 @@
-#include<stdio.h>   
+#include <stdio.h>
+#include <stdlib.h>
 
+// Structure to hold the information for each process
 struct Process {
+  int id;
   int arrival_time;
   int burst_time;
   int waiting_time;
-  int turnaround_time;
+  int complete;
 };
-  
-int main(){  
-    // initlialize the variable name  
-    int i, y, sum=0, count=0, temp[10];
-    int NOP, quantum, waiting_time=0, turnaround_time=0;  
-    float avg_waiting_time, avg_turnaround_time;  
-    
 
-    // Accept number of processes
-    printf(" Total number of process in the system: ");  
-    scanf("%d", &NOP);  
-    y = NOP; // Assign the number of process to variable y  
-    struct Process processes[NOP];
-    struct Process temporary[NOP];
-  
+// Function to implement the Round Robin scheduling algorithm
+void round_robin(struct Process* processes, int num_processes, int quantum, int* total_waiting_time, int* total_turnaround_time) {
+    int current_time = 0;
+    int sum, count=0,i, y = num_processes, temp[num_processes];
+
+    for (int a = 0 ; a < num_processes ; a++){
+        temp[a] = processes[a].burst_time;
+    }
+
+    for (sum=processes[0].arrival_time, i = 0 ; y!=0 ; ){
+        if (temp[i]<=quantum && temp[i]>0){
+            sum = sum + temp[i];
+            temp[i]=0;
+            count=1;
+        } 
+        else if (temp[i]>0){
+            temp[i] = temp[i] - quantum;
+            sum = sum + quantum;
+        }
+        
+        if (temp[i]==0 && count == 1){
+            y--;
+            printf("\n Process %d \t\t %d\t\t\t %d\t\t\t %d", processes[i].id, processes[i].burst_time, sum - processes[i].arrival_time, sum - processes[i].arrival_time - processes[i].burst_time);
+            *total_waiting_time += sum - processes[i].arrival_time - processes[i].burst_time;  
+            *total_turnaround_time += sum - processes[i].arrival_time;
+            count = 0;
+        }
+        if (i==num_processes-1){i=0;} 
+        else if (processes[i+1].arrival_time<=sum){i++;} 
+        else{i=0;}
+    }
+
+}
+
+int main() {
+    // Prompt the user to enter the number of processes
+    printf("Enter the number of processes: ");
+    int num_processes;
+    scanf("%d", &num_processes);
+
+    // Create an array of the process structure
+    struct Process processes[num_processes];
+
     // Use for loop to enter the details of the process like Arrival time and the Burst Time  
-    for(i=0; i<NOP; i++){  
-        // processes[i].arrival_time = 0;
-        // processes[i].burst_time = 0;
-        // processes[i].turnaround_time = 0;
-        // processes[i].waiting_time = 0;
+    for(int i=0; i<num_processes; i++){  
         printf("\n Enter the Arrival and Burst time of the Process[%d]\n", i+1);  
         printf("\tArrival time is: ");  // Accept arrival time  
         scanf("%d", &processes[i].arrival_time);  
         printf(" \tBurst time is: "); // Accept the Burst time  
         scanf("%d", &processes[i].burst_time);  
-        temporary[i].burst_time = processes[i].burst_time; // store the burst time in temp array  
+        processes[i].id = i+1;
     }  
 
-    // Accept the Time quantum  
-    printf("\n Enter the Time Quantum for the process: ");  
-    scanf("%d", &quantum);  
+    // sort process array
+    struct Process tempProcess;
+    for (int i = 0; i <num_processes; i++){
+        for (int x = 0; x<(num_processes-1);x++){
+            if (processes[x].arrival_time>processes[x+1].arrival_time){
+                tempProcess = processes[x];
+                processes[x] = processes[x+1];
+                processes[x+1] = tempProcess;
+                printf("%d and %d\n", processes[x].arrival_time, tempProcess.arrival_time);
+                
+            }
+        }
+    }
 
-    // Display the process No, burst time, Turn Around Time and the waiting time  
-    printf("\n Process No \t\t Burst Time \t\t Turnaround Time \t Waiting Time ");  
-    for(sum=processes[0].arrival_time, i = 0; y!=0; ) {  
-        if(temporary[i].burst_time <= quantum && temporary[i].burst_time > 0){ // if burst time is lesser than quantum
-            sum = sum + temporary[i].burst_time;  
-            temporary[i].burst_time = 0;  
-            count=1;  
-        }     
-        else if(temporary[i].burst_time > 0){   // if burst time is more than quantum
-            temporary[i].burst_time = temporary[i].burst_time - quantum;  
-            sum = sum + quantum;    
-        }  
-        if(temp[i]==0 && count==1){  
-            y--; //decrement the process no.  
-            printf("\n Process %d \t\t %d\t\t\t %d\t\t\t %d", i+1, processes[i].burst_time, sum - processes[i].arrival_time, sum - processes[i].arrival_time - processes[i].burst_time);  
-            waiting_time = waiting_time+sum-processes[i].arrival_time-processes[i].burst_time;  
-            turnaround_time = turnaround_time+sum-processes[i].arrival_time;  
-            count =0;     
-        }  
-        if(i==NOP-1){  // checks if it is the last procedure and resetting i to 0
-            i=0;  
-        }  
-        else if(processes[i+1].arrival_time<=sum){  // checks if the next arrival time is lesser than the sum.
-            i++;  
-        }  
-        else{  
-            i=0;  
-        }  
-    }   
+    // Prompt the user to enter the time quantum for the Round Robin scheduler
+    printf("Enter the time quantum: ");
+    int quantum;
+    scanf("%d", &quantum);
 
-    // represents the average waiting time and Turn Around time  
-    avg_waiting_time = waiting_time * 1.0/NOP;  
-    avg_turnaround_time = turnaround_time * 1.0/NOP;  
-    printf("\n\nAverage Turn Around Time: %.2f", avg_waiting_time);  
-    printf("\nAverage Waiting Time: %.2f", avg_turnaround_time);  
-    getchar();  
+    // Run the Round Robin scheduling algorithm
+    int total_waiting_time=0, total_turnaround_time=0;
+    printf("\n Process ID \t\t Burst Time \t\t Turnaround Time \t Waiting Time ");  
+    round_robin(processes, num_processes, quantum, &total_waiting_time, &total_turnaround_time);
+
+    // Calculate the average waiting time
+    float average_waiting_time = (float)total_waiting_time / num_processes;
+    float average_turnaround_time = (float)total_turnaround_time / num_processes;
+    printf("\nAverage waiting time: %.2f\n", average_waiting_time);
+    printf("Average turnaround time: %.2f\n", average_turnaround_time);
 
     return 0;
-}  
+}
