@@ -25,7 +25,7 @@ void turnAroundTime(int n,
 }
 
 // Function to calculate average time
-void avgTime(int n, int bt[])
+void avgTime(int n, int processes[], int bt[])
 {
     int wt[n], tat[n], total_wt = 0, total_tat = 0;
 
@@ -44,7 +44,7 @@ void avgTime(int n, int bt[])
     {
         total_wt = total_wt + wt[i];
         total_tat = total_tat + tat[i];
-        printf(" %d ", (i + 1));
+        printf(" %d ", processes[i]);
         printf("	 %d ", bt[i]);
         printf("	 %d", wt[i]);
         printf("	 %d\n", tat[i]);
@@ -84,6 +84,6 @@ int main()
         scanf("%d", &burst_time[i]);
     }
 
-    avgTime(n, burst_time);
+    avgTime(n, processes, burst_time);
     return 0;
 }
