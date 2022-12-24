@@ -3,8 +3,7 @@
 #include <stdio.h>
 // Function to find the waiting time for all
 // processes
-void waitingTime(int n,
-                 int bt[], int wt[])
+void waitingTime(int n, int bt[], int wt[])
 {
     // waiting time for first process is 0
     wt[0] = 0;
@@ -25,7 +24,7 @@ void turnAroundTime(int n,
 }
 
 // Function to calculate average time
-void avgTime(int n, int processes[], int bt[])
+void avgTime(int n, int bt[])
 {
     int wt[n], tat[n], total_wt = 0, total_tat = 0;
 
@@ -44,7 +43,7 @@ void avgTime(int n, int processes[], int bt[])
     {
         total_wt = total_wt + wt[i];
         total_tat = total_tat + tat[i];
-        printf(" %d ", processes[i]);
+        printf(" %d ", (i + 1));
         printf("	 %d ", bt[i]);
         printf("	 %d", wt[i]);
         printf("	 %d\n", tat[i]);
@@ -84,6 +83,6 @@ int main()
         scanf("%d", &burst_time[i]);
     }
 
-    avgTime(n, processes, burst_time);
+    avgTime(n, burst_time);
     return 0;
 }
