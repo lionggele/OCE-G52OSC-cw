@@ -1,4 +1,5 @@
 // scheduling
+// Online reopusrce : https://www.geeksforgeeks.org/program-for-fcfs-cpu-scheduling-set-1/
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -9,8 +10,10 @@ struct Process
     int burst_time;
 };
 
+// Function to implement FCFS scheduler algorithm.
 void first_come_first_serve(struct Process *processes, int num_processes, int *total_waiting_time, int *total_turnaround_time)
 {
+
     int waiting_time[num_processes];
     waiting_time[0] = 0;
 
