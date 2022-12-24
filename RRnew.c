@@ -53,12 +53,19 @@ int main() {
     // Create an array of the process structure
     struct Process processes[num_processes];
 
-    // Prompt the user to enter the information for each process
-    for (int i = 0; i < num_processes; i++) {
-        printf("Enter the ID, arrival time, and burst time for process %d: ", i+1);
-        scanf("%d%d%d", &processes[i].id, &processes[i].arrival_time, &processes[i].burst_time);
-        processes[i].complete = 0;
-    }
+    // Use for loop to enter the details of the process like Arrival time and the Burst Time  
+    for(int i=0; i<num_processes; i++){  
+        // processes[i].arrival_time = 0;
+        // processes[i].burst_time = 0;
+        // processes[i].turnaround_time = 0;
+        // processes[i].waiting_time = 0;
+        printf("\n Enter the Arrival and Burst time of the Process[%d]\n", i+1);  
+        printf("\tArrival time is: ");  // Accept arrival time  
+        scanf("%d", &processes[i].arrival_time);  
+        printf(" \tBurst time is: "); // Accept the Burst time  
+        scanf("%d", &processes[i].burst_time);  
+        processes[i].id = i+1;
+    }  
 
     // sort process array
     struct Process tempProcess;
