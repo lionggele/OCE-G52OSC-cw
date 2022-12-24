@@ -1,5 +1,5 @@
 // scheduling
-// Online reopusrce : https://www.geeksforgeeks.org/program-for-fcfs-cpu-scheduling-set-1/
+// Online resource : https://www.geeksforgeeks.org/program-for-fcfs-cpu-scheduling-set-1/
 #include <stdio.h>
 #include <stdlib.h>
 
