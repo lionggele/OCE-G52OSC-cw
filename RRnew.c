@@ -55,10 +55,6 @@ int main() {
 
     // Use for loop to enter the details of the process like Arrival time and the Burst Time  
     for(int i=0; i<num_processes; i++){  
-        // processes[i].arrival_time = 0;
-        // processes[i].burst_time = 0;
-        // processes[i].turnaround_time = 0;
-        // processes[i].waiting_time = 0;
         printf("\n Enter the Arrival and Burst time of the Process[%d]\n", i+1);  
         printf("\tArrival time is: ");  // Accept arrival time  
         scanf("%d", &processes[i].arrival_time);  

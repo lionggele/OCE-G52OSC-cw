@@ -20,6 +20,7 @@ int FCFSsum = 0;
 void round_robin(struct Process* q1, int num_processes, int quantum, int* total_waiting_time, int* total_turnaround_time, struct Process* q2) {
     int current_time = 0;
     int count=0,i, y = num_processes;
+
     
 
     for(int i = 0; i< num_processes; i++){
@@ -67,8 +68,8 @@ void FCFS(int quantum, int* total_waiting_time, int* total_turnaround_time, stru
         printf("\nThere is no need for the second queue as everything was completed in the first\n");
     }
     else{
+        printf("\n Process ID \t\t Remaining Burst Time \t\t Turnaround Time \t Waiting Time "); 
         for(int i = 0; i<q2Length+1;i++){
-            printf("\n Process ID \t\t Remaining Burst Time \t\t Turnaround Time \t Waiting Time "); 
             printf("\n Process %d \t\t %d\t\t\t\t %d\t\t\t %d", q2[i].id, q2[i].remaining_burst, FCFSsum+q2[i].remaining_burst, FCFSsum);
             q2[i].waiting_time += (FCFSsum+sum-q2[i].turnaround_time);
             q2[i].turnaround_time += (q2[i].waiting_time + q2[i].remaining_burst);
@@ -95,8 +96,12 @@ int main() {
 
     // Prompt the user to enter the information for each process
     for (int i = 0; i < num_processes; i++) {
-        printf("Enter the ID number, arrival time, and burst time for process %d: ", i+1);
-        scanf("%d%d%d", &q1[i].id, &q1[i].arrival_time, &q1[i].burst_time);
+        printf("\nEnter the Arrival and Burst time of the Process[%d]\n", i+1);  
+        printf("\tArrival time is: ");  // Accept arrival time  
+        scanf("%d", &q1[i].arrival_time);  
+        printf("\tBurst time is: "); // Accept the Burst time  
+        scanf("%d", &q1[i].burst_time);  
+        q1[i].id = i+1;
         q1[i].complete = 0;
     }
 
@@ -113,36 +118,22 @@ int main() {
         }
     }
 
-    // check if arrival times are valid (no repetition and starts with 0)
-    if(q1[0].arrival_time != 0){
-        printf("\n\nInvalid Arrival Times!");
-        return 0;
-    }
-    else{
-        for (int i = 0 ; i < (num_processes-1); i++){
-            if ((q1[i+1].arrival_time - q1[i].arrival_time) != 1){
-                printf("\n\nInvalid Arrival Times!");
-                return 0;
-            }
-            
-        }
-    }
-
-
+    // Setting the sum to the first arrival time value in case it is not 0 to avoid negative values.
+    sum = q1[0].arrival_time;
 
     // Prompt the user to enter the time quantum for the Round Robin scheduler
-    printf("Enter the time quantum: ");
+    printf("\nEnter the time quantum: ");
     int quantum;
     scanf("%d", &quantum);
 
     // run for both queues
-    printf("\nQueue 1\n");  
+    printf("\nQueue 1");  
     round_robin(q1, num_processes, quantum, &total_waiting_time, &total_turnaround_time, q2);
-    printf("\nQueue 2\n"); 
+    printf("\n\nQueue 2"); 
     FCFS(quantum,&total_waiting_time, &total_turnaround_time, q2);
 
     // summarize both queues
-    printf("\nSummary\n");
+    printf("\n\nSummary");
     printf("\n Process ID \t\t Burst Time \t\t Turnaround Time \t Waiting Time ");  
     for (int i = 0; i < num_processes; i++){
         if (q1[i].complete == 1){
@@ -160,7 +151,7 @@ int main() {
     // Calculate the average waiting and turnaround times
     float average_waiting_time = (float)total_waiting_time / num_processes;
     float average_turnaround_time = (float)total_turnaround_time / num_processes;
-    printf("\nAverage waiting time: %.2f\n", average_waiting_time);
+    printf("\n\nAverage waiting time: %.2f\n", average_waiting_time);
     printf("Average turnaround time: %.2f\n", average_turnaround_time);
 
     return 0;
