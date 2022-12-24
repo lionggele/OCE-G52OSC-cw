@@ -68,27 +68,11 @@ int main() {
                 tempProcess = processes[x];
                 processes[x] = processes[x+1];
                 processes[x+1] = tempProcess;
+                printf("%d and %d\n", processes[x].arrival_time, tempProcess.arrival_time);
                 
             }
         }
     }
-
-    // check if arrival times are valid (no repetition and starts with 0)
-    if(processes[0].arrival_time != 0){
-        printf("\n\nInvalid Arrival Times!");
-        return 0;
-    }
-    else{
-        for (int i = 0 ; i < (num_processes-1); i++){
-            if ((processes[i+1].arrival_time - processes[i].arrival_time) != 1){
-                printf("\n\nInvalid Arrival Times!");
-                return 0;
-            }
-            
-        }
-    }
-
-
 
     // Prompt the user to enter the time quantum for the Round Robin scheduler
     printf("Enter the time quantum: ");
