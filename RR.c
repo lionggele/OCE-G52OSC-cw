@@ -93,7 +93,6 @@ int main()
                 tempProcess = processes[x];
                 processes[x] = processes[x + 1];
                 processes[x + 1] = tempProcess;
-                printf("%d and %d\n", processes[x].arrival_time, tempProcess.arrival_time);
             }
         }
     }
