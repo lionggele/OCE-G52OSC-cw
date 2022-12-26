@@ -53,15 +53,14 @@ int main()
 
     // Run the FCFS scheduling algorithm
     int total_waiting_time = 0, total_turnaround_time = 0;
-    printf("\n Process ID \t\t Burst Time \t\t Waiting Time \t TurnAround Time");
+    printf("\n Process ID \t\t Burst Time \t\t Waiting Time \t\t TurnAround Time");
     first_come_first_serve(processes, num_processes, &total_waiting_time, &total_turnaround_time);
 
     // Calculate the average waiting time
     float average_waiting_time = (float)total_waiting_time / num_processes;
     float average_turnaround_time = (float)total_turnaround_time / num_processes;
     printf("\nAverage waiting time: %.2f\n", average_waiting_time);
-    fs
-        printf("Average turnaround time: %.2f\n", average_turnaround_time);
+    printf("Average turnaround time: %.2f\n", average_turnaround_time);
 
     return 0;
 }
