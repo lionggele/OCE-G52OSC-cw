@@ -115,7 +115,7 @@ int main()
     printf("Average turnaround time: %.2f\n", average_turnaround_time);
 
     // Calculate throughput
-    float throughput = (float)total_burst_time / num_processes;
+    float throughput = (float)num_processes / total_burst_time;
     printf("Throughput: %.2f\n", throughput);
 
     return 0;
