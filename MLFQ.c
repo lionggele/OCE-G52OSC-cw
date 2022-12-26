@@ -21,20 +21,15 @@ int FCFSsum = 0;
 void round_robin(struct Process* q1, int num_processes, int quantum, int* total_waiting_time, int* total_turnaround_time, struct Process* q2) {
     int current_time = 0;
     int count=0,i, y = num_processes;
-
-    
-
     for(int i = 0; i< num_processes; i++){
-        
         q1[i].complete = 0;
-        
         // to match the time in case there is a gap between arrival time and total traversed time
         if(i > 0){
             if (q1[i].arrival_time > sum){
                 sum += (q1[i].arrival_time - sum);
             }
         }
-
+        // if burst less than quantum, time elapse is just the burst
         if (q1[i].burst_time < quantum){
             q1[i].waiting_time = sum - q1[i].arrival_time;
             q1[i].time_before_process = sum;
@@ -42,8 +37,8 @@ void round_robin(struct Process* q1, int num_processes, int quantum, int* total_
             q1[i].remaining_burst = 0;
             q1[i].turnaround_time = q1[i].burst_time+q1[i].waiting_time;
             q1[i].complete = 1;
-            
         }
+        // if burst equals to quantum, time elapsed is quantum
         else if (q1[i].burst_time == quantum){
             q1[i].waiting_time = sum - q1[i].arrival_time;
             q1[i].time_before_process = sum;
@@ -51,8 +46,8 @@ void round_robin(struct Process* q1, int num_processes, int quantum, int* total_
             q1[i].remaining_burst = 0;
             q1[i].turnaround_time = quantum + q1[i].waiting_time;
             q1[i].complete = 1;
-
         } 
+        // if burst more than quantum, time elapsed is quantum, and process is added to second queue
         else{
             q1[i].waiting_time = sum - q1[i].arrival_time;
             q1[i].time_before_process = sum;
@@ -61,29 +56,26 @@ void round_robin(struct Process* q1, int num_processes, int quantum, int* total_
             q1[i].remaining_burst = q1[i].burst_time - quantum;
             q1[i].turnaround_time = quantum + q1[i].waiting_time;
             q2[q2Length] = q1[i];
-
-        }
-
-        
+        } 
     }
     printf("\n Process ID \t\t Burst Time \t\t Turnaround Time \t Waiting Time ");  
     for (int i = 0; i < num_processes; i++){
         printf("\n Process %d \t\t %d\t\t\t %d\t\t\t %d", q1[i].id, q1[i].burst_time, q1[i].turnaround_time, q1[i].waiting_time);
     }
-
-
 }
 
 //FCFS function
 void FCFS(int quantum, int* total_waiting_time, int* total_turnaround_time, struct Process* q2, struct Process* q1){
-
+    //empty queue
     if (q2Length <0){
         printf("\nThere is no need for the second queue as everything was completed in the first\n");
     }
+    // FCFS with printed waiting and turnaround times only counting from this queue
     else{
         printf("\n Process ID \t\t Remaining Burst Time \t\t Turnaround Time \t Waiting Time "); 
         for(int i = 0; i<q2Length+1;i++){
             printf("\n Process %d \t\t %d\t\t\t\t %d\t\t\t %d", q2[i].id, q2[i].remaining_burst, FCFSsum+q2[i].remaining_burst, FCFSsum);
+            // update total waiting time and turnaround times of the processes after going through entire MLFQ
             q2[i].waiting_time += (FCFSsum+sum-quantum-q2[i].time_before_process);
             q2[i].turnaround_time += (q2[i].waiting_time + q2[i].remaining_burst);
 
