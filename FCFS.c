@@ -1,4 +1,5 @@
 // scheduling
+// Online resource : https://www.geeksforgeeks.org/program-for-fcfs-cpu-scheduling-set-1/
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -9,8 +10,10 @@ struct Process
     int burst_time;
 };
 
+// Function to implement FCFS scheduler algorithm.
 void first_come_first_serve(struct Process *processes, int num_processes, int *total_waiting_time, int *total_turnaround_time)
 {
+
     int waiting_time[num_processes];
     waiting_time[0] = 0;
 
@@ -22,7 +25,8 @@ void first_come_first_serve(struct Process *processes, int num_processes, int *t
 
     for (int i = 0; i < num_processes; i++)
     {
-        printf("\n Process %d \t\t %d\t\t\t %d\t\t\t %d", processes[i].id, processes[i].burst_time, waiting_time[i], processes[i].burst_time + waiting_time[i]);
+        printf("\n Process %d \t\t %d\t\t\t %d\t\t\t %d", processes[i].id,
+               processes[i].burst_time, waiting_time[i], processes[i].burst_time + waiting_time[i]);
         *total_waiting_time += waiting_time[i];
         *total_turnaround_time += waiting_time[i] + processes[i].burst_time;
     }
@@ -30,7 +34,7 @@ void first_come_first_serve(struct Process *processes, int num_processes, int *t
 
 int main()
 {
-    // Prompt the user to enter the number of processes
+    // Prompt the user to enter the number of processesA
     printf("Enter the number of processes: ");
     int num_processes;
     scanf("%d", &num_processes);
@@ -38,11 +42,13 @@ int main()
     // Create an array of the process structure
     struct Process processes[num_processes];
 
-    // Prompt the user to enter the information for each process
+    // Use for loop to enter the details of the process like Arrival time and the Burst Time
     for (int i = 0; i < num_processes; i++)
     {
-        printf("Enter the id and burst time for process %d: ", i + 1);
-        scanf("%d%d", &processes[i].id, &processes[i].burst_time);
+        printf("\n Enter the Arrival and Burst time of the Process[%d]\n", i + 1);
+        printf(" \tBurst time is: "); // Accept the Burst time
+        scanf("%d", &processes[i].burst_time);
+        processes[i].id = i + 1;
     }
 
     // Run the FCFS scheduling algorithm
